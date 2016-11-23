@@ -1854,7 +1854,16 @@ by keyword symbols and not by strings"
 	       (with-timeout-local ((wserver-read-request-timeout *wserver*)
 				    (debug-format :info "request timed out on read")
 				    (values nil nil *response-request-timeout*))
-		 (read-http-request sock chars-seen)))))
+                 ;;; XXX Remove before merging.
+		 (handler-bind
+                     ((error (lambda (c)
+                               (declare (ignore c))
+                               (top-level.debug:zoom
+                                (or (vhost-error-stream
+                                     (wserver-default-vhost
+                                      *wserver*))
+                                    *initial-terminal-io*)))))
+                   (read-http-request sock chars-seen))))))
 	  
 	  (if* (null req)
 	     then ; end of file, means do nothing
