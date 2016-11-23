@@ -1632,8 +1632,7 @@ by keyword symbols and not by strings"
 	     ;; 8.1.
 	     #+(version>= 8 1)
 	     ((member :zoom-on-error *debug-current* :test #'eq)
-	      (tagbody out
-		(handler-bind
+	      (tagbody (handler-bind
 		    ((error
 		      (lambda (cond)
 			(if* (connection-reset-error cond)
@@ -1657,7 +1656,8 @@ by keyword symbols and not by strings"
 				   then ; after the zoom ignore the error
 					(go out))
 				))))
-		  (process-connection sock))))
+		  (process-connection sock))
+		out))
 	     ((not (member :notrap *debug-current* :test #'eq))
 	      (handler-case (process-connection sock)
 		(error (cond)
