@@ -1563,9 +1563,7 @@
     (if* (null (errorset 
 		(setq p (open filename
 			      :direction :input
-			      #-(and allegro (version>= 6))
 			      :element-type
-			      #-(and allegro (version>= 6))
 			      '(unsigned-byte 8)))))
        then ; file not readable
 		      
